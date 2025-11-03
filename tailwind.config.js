@@ -5,21 +5,22 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#030014",
-        secondary: "#151312",
-        light: {
-          100: "#D6C6FF",
-          200: "#A8B5DB",
-          300: "#9CA4AB"
+        nemo: {
+          pink: "#eb4fc2",
+          green: "#75faa7",
+          bluePurple: "#4021f5",
+          darkPurple: "#290e58",
+          lightGreen: "#b9fad4",
+          yellow: "#fffd55",
+          cyan: "#8efcfb",
+          orange: "#f08f35",
+          yellowLight: "#fcf9ce",
+          lightPurple: '#221f2a',
+          lighterPurple: '#332f3e'
         },
-        dark: {
-          100: "#221F3D",
-          200: "#0F0D23"
-        },
-        accent: "#AB8BFF"
-      }
+        mediumGrey: "#999",
+      },
     },
   },
   plugins: [],
-}
-
+};

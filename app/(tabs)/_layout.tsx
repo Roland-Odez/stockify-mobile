@@ -10,6 +10,7 @@ export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
+    <>
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
@@ -19,6 +20,7 @@ export default function TabLayout() {
         },
         tabBarInactiveTintColor: '#878585e8',
       }}>
+        
       <Tabs.Screen
         name="portfolio"
         options={{
@@ -27,7 +29,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="index"
+        name="discovery"
         options={{
           title: 'Discovery',
           tabBarIcon: ({ focused }) => <FontAwesome6 name="earth-americas" size={22} color={focused ? 'white': '#878585e8'} />,
@@ -48,5 +50,6 @@ export default function TabLayout() {
         }}
       />
     </Tabs>
+    </>
   );
 }
