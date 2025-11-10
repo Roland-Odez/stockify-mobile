@@ -1,14 +1,42 @@
 import { useMenuAnimation } from '@/context/MenuAnimationContext';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Fontisto from '@expo/vector-icons/Fontisto';
+import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Link } from 'expo-router';
-import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Href, Link, useLocalSearchParams } from 'expo-router';
+import React, { useState } from 'react';
+import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+
+
+interface TabLinkTypes {
+    name: string;
+    path: Href;
+    icon: (active: boolean)=> React.ReactElement;
+}
 
 const Header = () => {
   const {menuOpen} = useMenuAnimation()
+  const [search, setSearch] = useState('')
+  const params = useLocalSearchParams()
 
-
+  const tabLink: TabLinkTypes[] = [
+    { 
+      name: 'Stocks & ETFs', 
+      path: '/(tabs)/discovery?tab=stocks',
+      icon: (active) => <View className='w-7 h-7 items-center justify-center rounded-full' style={{backgroundColor: active? 'black':'white'}}><FontAwesome name="building" size={15} color={active? 'white':'black'} /></View>
+    },
+    { 
+      name: 'Crypto', 
+      path: '/(tabs)/discovery?tab=crypto',
+      icon: (active) => <View className='w-7 h-7 items-center justify-center rounded-full' style={{backgroundColor: active? 'black':'white', transform: 'rotate(20deg)'}}><Foundation name="bitcoin" size={20} color={active? 'white':'black'} /></View>
+    },
+    { 
+      name: 'Boost', 
+      path: '/(tabs)/discovery?tab=boost',
+      icon: (active) => <View className='w-7 h-7 items-center justify-center rounded-full' style={{backgroundColor: active? 'black':'white'}}><MaterialIcons name="bolt" size={20} color={active? 'white':'black'} /></View>
+    }
+  ]
 
 
 
@@ -43,6 +71,31 @@ const Header = () => {
           </Pressable>
         </View>
       </View>
+
+      <View style={styles.row}>
+        <View className='bg-nemo-lightPurple rounded-md px-4 flex-row items-center flex-1 gap-2 my-6'>
+          <Fontisto name="search" size={15} color="#878585e8" />
+          <TextInput 
+            onChangeText={setSearch}
+            placeholder='Search assets and topics'
+            placeholderTextColor='#878585e8'
+            value={search}
+            className='text-lg text-[#878585e8]'/>
+        </View>
+      </View>
+      <View style={[styles.row, {justifyContent: 'flex-start',}]} className='gap-2'>
+        {
+          tabLink.map((tab, idx) => {
+            const isActiveInner = params.tab === tab.path.toString().split('=')[1]
+          return (<Link href={tab.path} key={`${tab.name}-${idx}`}>
+            <View style={[styles.link, {backgroundColor: isActiveInner ? '#eb4fc2':'#221f2a', borderRadius: 5, paddingVertical: 10, flex: 1}]}>
+              {tab.icon(isActiveInner)}
+              <Text style={[styles.linkText, {color: isActiveInner ? 'black': 'white'}]}>{tab.name}</Text>
+            </View>
+          </Link>
+          )})
+        }
+      </View>
     </View>
   );
 };
@@ -51,7 +104,7 @@ export default Header;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 16,
+    paddingVertical: 16,
     position: 'relative'
   },
   row: {

@@ -5,7 +5,7 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import SimpleLineIcons from '@expo/vector-icons/SimpleLineIcons';
-import { Href, Link, usePathname } from 'expo-router';
+import { Href, Link, useLocalSearchParams, usePathname } from 'expo-router';
 import React from 'react';
 import { Pressable, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
@@ -78,6 +78,7 @@ const Menu = () => {
   const pathname = usePathname();
   const {menuOpen} = useMenuAnimation()
   const dropDownLink = useSharedValue(0);
+  const params = useLocalSearchParams()
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateX: withTiming(menuOpen.value ? 0 : -400, { duration: 500 }) }],
@@ -106,8 +107,10 @@ const Menu = () => {
           {menuLinks.map((link) => {
             const isActiveInner =
               link.innerLink?.some((p) =>
-                pathname.startsWith(String(p.path).split('?')[0])
+                // pathname.startsWith(String(p.path).split('?')[0])
+                params.tab === p.path.toString().split('=')[1]
               ) ?? false;
+            // const isActiveInner = params.tab === p.path.toString().split('=')[1]
             return (
               <View key={link.name} className="mb-4">
                 {link.path ? (
@@ -159,9 +162,8 @@ const Menu = () => {
                           <Link
                             href={l.path}
                             key={l.name}
-                            className="text-base text-[#878585e8]"
                           >
-                            <Text>{l.name}</Text>
+                            <Text className="text-base text-[#878585e8]">{l.name}</Text>
                           </Link>
                         ))
                       }

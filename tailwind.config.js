@@ -8,7 +8,7 @@ module.exports = {
         nemo: {
           pink: "#eb4fc2",
           green: "#75faa7",
-          bluePurple: "#4021f5",
+          bluePurple: "#4b6cd7",
           darkPurple: "#290e58",
           lightGreen: "#b9fad4",
           yellow: "#fffd55",
