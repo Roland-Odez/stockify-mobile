@@ -98,7 +98,7 @@ export default function HomeScreen() {
         <Header />
         <ScrollView className="px-4 pt-6"
           contentContainerStyle={{
-            paddingBottom: 35
+            paddingBottom: 40
           }}
         >
           {/* banner */}

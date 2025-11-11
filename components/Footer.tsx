@@ -8,8 +8,8 @@ const Footer = () => {
     <View style={styles.container}>
         <MaterialCommunityIcons name="shield-half-full" size={24} color="#ddd" />
         <View>
-        <Text className='text-[#ddd] text-center text-sm'>Stockify is offered by Exinity Me Ltd.</Text>
-        <Text className='text-[#ddd] text-center text-sm'> Regulated by ADGM FSRA</Text>
+            <Text className='text-[#ddd] text-center text-sm'>Stockify is offered by Exinity Me Ltd.</Text>
+            <Text className='text-[#ddd] text-center text-sm'> Regulated by ADGM FSRA</Text>
         </View>
         <View style={styles.media}>
             <FontAwesome6 name="x-twitter" size={20} color="white" />

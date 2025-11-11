@@ -11,7 +11,7 @@ interface MarketStockCardTypes<T> {
 }
 
   const Item2 = ({ name, img, opp }: Item2Props) => (
-    <View className="w-[130px] justify-end rounded-lg overflow-hidden gap-2 bg-nemo-lightPurple">
+    <View className="w-[130px] h-fit justify-end rounded-lg overflow-hidden gap-2 bg-nemo-lightPurple">
       <View className="gap-1.5 flex-1">
         <View className="flex-row justify-between">
           <ImageBackground className="w-full h-[150px] bg-white" source={img}>
