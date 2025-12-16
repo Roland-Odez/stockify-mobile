@@ -12,14 +12,12 @@ interface MarketStockCardTypes<T> {
 
   const Item2 = ({ name, img, opp }: Item2Props) => (
     <View className="w-[130px] h-fit justify-end rounded-lg overflow-hidden gap-2 bg-nemo-lightPurple">
-      <View className="gap-1.5 flex-1">
-        <View className="flex-row justify-between">
-          <ImageBackground className="w-full h-[150px] bg-white" source={img}>
-            <View className="bg-[#0000007e] w-[30px] h-[30px] items-center justify-center rounded-full absolute top-2 right-2">
-              <FontAwesome name="star" size={16} color="#ccc" />
-            </View>
-          </ImageBackground>
-        </View>
+      <View className="gap-1.5 flex-1 h-[150px]">
+        <ImageBackground className="w-full h-[150px] bg-white" source={img}>
+          <View className="bg-[#0000007e] w-[30px] h-[30px] items-center justify-center rounded-full absolute top-2 right-2">
+            <FontAwesome name="star" size={16} color="#ccc" />
+          </View>
+        </ImageBackground>
       </View>
 
       <View className="gap-1.5 px-2">

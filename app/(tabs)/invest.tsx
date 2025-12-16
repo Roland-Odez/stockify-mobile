@@ -3,7 +3,9 @@ import Header from "@/components/Header";
 import InvestmentList from "@/components/InvestmentList";
 import Wrapper from "@/components/Wrapper";
 import Feather from "@expo/vector-icons/Feather";
+import { useCallback, useState } from "react";
 import {
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -57,6 +59,15 @@ const Invest = () => {
     }
   ];
 
+    const [refreshing, setRefreshing] = useState(false);
+  
+    const onRefresh = useCallback(() => {
+      setRefreshing(true);
+      setTimeout(() => {
+        setRefreshing(false);
+      }, 2000);
+    }, []);
+
   return (
     <>
       <Wrapper>
@@ -65,6 +76,9 @@ const Invest = () => {
           contentContainerStyle={{
             paddingBottom: 40
           }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           {/* banner */}
           <View className="bg-nemo-bluePurple rounded-lg p-3 overflow-hidden flex-row justify-between items-center">

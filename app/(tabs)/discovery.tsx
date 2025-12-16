@@ -9,8 +9,10 @@ import { RenderItem } from "@/components/RenderItem";
 import Wrapper from "@/components/Wrapper";
 import Feather from "@expo/vector-icons/Feather";
 import { Link } from "expo-router";
+import { useCallback, useState } from "react";
 import {
   Image,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -56,7 +58,6 @@ export default function HomeScreen() {
       img: require(`@/assets/images/tesla.png`)
     }
   ];
-
   const DATA2 = [
     {
       name: "Penny Stocks to watch",
@@ -92,6 +93,15 @@ export default function HomeScreen() {
     }
   ]
 
+   const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+
   return (
     <>
       <Wrapper>
@@ -100,6 +110,9 @@ export default function HomeScreen() {
           contentContainerStyle={{
             paddingBottom: 40
           }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
         >
           {/* banner */}
           <View className="flex-row gap-2 bg-nemo-bluePurple rounded-lg p-3 overflow-hidden">

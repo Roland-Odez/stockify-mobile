@@ -4,7 +4,7 @@ import Fontisto from '@expo/vector-icons/Fontisto';
 import Foundation from '@expo/vector-icons/Foundation';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Href, Link, useLocalSearchParams } from 'expo-router';
+import { Href, Link, useLocalSearchParams, usePathname } from 'expo-router';
 import React, { useState } from 'react';
 import { Image, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
@@ -19,6 +19,8 @@ const Header = () => {
   const {menuOpen} = useMenuAnimation()
   const [search, setSearch] = useState('')
   const params = useLocalSearchParams()
+  const pathname = usePathname()
+  console.log(pathname)
 
   const tabLink: TabLinkTypes[] = [
     { 
@@ -71,31 +73,36 @@ const Header = () => {
           </Pressable>
         </View>
       </View>
-
-      <View style={styles.row}>
-        <View className='bg-nemo-lightPurple rounded-md px-4 flex-row items-center flex-1 gap-2 my-6'>
-          <Fontisto name="search" size={15} color="#878585e8" />
-          <TextInput 
-            onChangeText={setSearch}
-            placeholder='Search assets and topics'
-            placeholderTextColor='#878585e8'
-            value={search}
-            className='text-lg text-[#878585e8]'/>
-        </View>
-      </View>
-      <View style={[styles.row, {justifyContent: 'flex-start',}]} className='gap-2'>
-        {
-          tabLink.map((tab, idx) => {
-            const isActiveInner = params.tab === tab.path.toString().split('=')[1]
-          return (<Link href={tab.path} key={`${tab.name}-${idx}`}>
-            <View style={[styles.link, {backgroundColor: isActiveInner ? '#eb4fc2':'#221f2a', borderRadius: 5, paddingVertical: 10, flex: 1}]}>
-              {tab.icon(isActiveInner)}
-              <Text style={[styles.linkText, {color: isActiveInner ? 'black': 'white'}]}>{tab.name}</Text>
+      
+      {
+        !pathname.endsWith('/portfolio') &&
+         (<>
+          <View style={styles.row}>
+            <View className='bg-nemo-lightPurple rounded-md px-4 flex-row items-center flex-1 gap-2 my-6'>
+              <Fontisto name="search" size={15} color="#878585e8" />
+              <TextInput 
+                onChangeText={setSearch}
+                placeholder='Search assets and topics'
+                placeholderTextColor='#878585e8'
+                value={search}
+                className='text-lg text-[#878585e8]'/>
             </View>
-          </Link>
-          )})
-        }
-      </View>
+          </View>
+          <View style={[styles.row, {justifyContent: 'flex-start',}]} className='gap-2'>
+            {
+              tabLink.map((tab, idx) => {
+                const isActiveInner = params.tab === tab.path.toString().split('=')[1]
+              return (<Link href={tab.path} key={`${tab.name}-${idx}`}>
+                <View style={[styles.link, {backgroundColor: isActiveInner ? '#eb4fc2':'#221f2a', borderRadius: 5, paddingVertical: 10, flex: 1}]}>
+                  {tab.icon(isActiveInner)}
+                  <Text style={[styles.linkText, {color: isActiveInner ? 'black': 'white'}]}>{tab.name}</Text>
+                </View>
+              </Link>
+              )})
+            }
+          </View>
+        </>)
+      }
     </View>
   );
 };
