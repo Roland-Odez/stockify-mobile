@@ -1,0 +1,84 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useState } from "react";
+
+type FormData = {
+  step: number;
+  totalStep: number;
+  email: string;
+  phone: string;
+  firstName: string;
+  lastName: string;
+  sex: "Male" | "Female" | null;
+  nationality: string;
+  dob: Date | null;
+  city: string;
+  tin: string;
+  signature: string;
+};
+
+const STORAGE_KEY = "contact-form";
+
+export function usePersistentForm() {
+  const [form, setForm] = useState<FormData>({
+    step: 1,
+    totalStep: 8,
+    email: "",
+    phone: "",
+    firstName: "",
+    lastName: "",
+    sex: null,
+    nationality: "",
+    dob: null,
+    city: "",
+    tin: "",
+    signature: "",
+  });
+
+  // Load saved form
+  useEffect(() => {
+    AsyncStorage.getItem(STORAGE_KEY).then((data) => {
+      if (data) setForm(JSON.parse(data));
+    });
+  }, []);
+
+  // Save on change
+  useEffect(() => {
+    AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+  }, [form]);
+
+  function updateField(key: keyof FormData, value: string | number) {
+    setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function nextForm() {
+    if (!(form.step >= 3)) {
+      setForm((prev) => ({ ...prev, step: prev.step + 1 }));
+    }
+  }
+
+  function prevForm() {
+    if (form.step > 1) {
+      setForm((prev) => ({ ...prev, step: prev.step - 1 }));
+    }
+  }
+
+  function clearForm() {
+    AsyncStorage.removeItem(STORAGE_KEY);
+    setForm({
+      phone: "",
+      email: "",
+      step: 1,
+      totalStep: 8,
+      dob: null,
+      firstName: "",
+      lastName: "",
+      nationality: "",
+      sex: null,
+      city: "",
+      signature: "",
+      tin: "",
+    });
+  }
+
+  return { form, updateField, clearForm, nextForm, prevForm };
+}
