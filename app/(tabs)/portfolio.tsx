@@ -74,7 +74,7 @@ const Portfolio = () => {
                     }}
                     className="bg-nemo-lighterPurple"
                     >
-                    <Link href={'/(auth)/forgot-password'}><Text className="text-white text-lg">Log in</Text></Link>
+                    <Link href={'/(auth)/get-started'}><Text className="text-white text-lg">Log in</Text></Link>
                   </TouchableOpacity>
                 </View>
               </View>

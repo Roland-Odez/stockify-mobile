@@ -55,7 +55,19 @@ export default function TabLayout() {
           title: 'Stockify AI',
           headerShown: true,
           headerStyle: {
-            backgroundColor: ''
+            backgroundColor: 'black',
+          },
+          headerLeftContainerStyle: {
+            flex: 1,
+            paddingLeft: 10
+          },
+          headerRightContainerStyle: {
+            flex: 1,
+            paddingRight: 10
+          },
+          headerTitleContainerStyle: {
+            flex: 1,
+            alignItems: 'center',
           },
           headerLeft: () => 
             <Pressable onPress={() => router.back()} >

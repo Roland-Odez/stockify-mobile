@@ -1,14 +1,12 @@
-import SignUpStepOne from "@/components/SignUpStepOne";
-import SignUpStepThree from "@/components/SignUpStepThree";
-import SignUpStepTwo from "@/components/SignUpStepTwo";
+import CreateProfileStepOne from "@/components/CreateProfileStepOne";
 import { usePersistentForm } from "@/hooks/use-persistent-store";
 import { supabase } from "@/utils/supabase";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
-import { useEffect } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import React, { useEffect } from "react";
+import { Pressable, View } from "react-native";
 
-const EmailSignup = () => {
+const CreateProfile = () => {
   const router = useRouter();
   const { form, nextForm, prevForm, updateField, clearForm } =
     usePersistentForm();
@@ -36,7 +34,6 @@ const EmailSignup = () => {
       router.back();
     }
   };
-
   return (
     <View className="pt-16 bg-[#130b1d] flex-1 p-safe-offset-4 z-0">
       <View className="px-2 flex-row items-center gap-3">
@@ -55,21 +52,19 @@ const EmailSignup = () => {
 
       <View className="flex-1">
         {form.step === 1 && (
-          <SignUpStepOne
+          <CreateProfileStepOne
             form={form}
             next={nextForm}
             updateField={updateField}
           />
         )}
-        {form.step === 2 && <SignUpStepTwo form={form} next={nextForm} />}
+        {/* {form.step === 2 && <SignUpStepTwo form={form} next={nextForm} />}
         {form.step === 3 && (
           <SignUpStepThree form={form} clearForm={clearForm} />
-        )}
+        )} */}
       </View>
     </View>
   );
 };
 
-export default EmailSignup;
-
-const styles = StyleSheet.create({});
+export default CreateProfile;

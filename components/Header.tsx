@@ -54,7 +54,7 @@ const Header = () => {
         />
         <View className='flex flex-row items-center'>
           {/* Link */}
-          <Link href='/(auth)/get-started' asChild>
+          <Link href='/(auth)/signup'>
             <View style={styles.link}>
               <MaterialIcons name="person-add-alt" size={20} color="black" />
               <Text style={styles.linkText}>Create account</Text>
