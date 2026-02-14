@@ -2,6 +2,8 @@ import SingleRadio from "@/components/SingleRadio";
 import { supabase } from "@/utils/supabase";
 import { validatePassword } from "@/utils/validatePassword";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
+import { Link } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -12,11 +14,15 @@ import {
 } from "react-native";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
-type RecoveryStep = "EMAIL" | "VERIFY_CODE" | "RESET_PASSWORD";
+type RecoveryStep =
+  | "EMAIL"
+  | "VERIFY_CODE"
+  | "RESET_PASSWORD"
+  | "PASSWORD_CHANGED";
 
 const ForgotPassword = () => {
-  const [recoverySteps, setRecoverySteps] = useState<RecoveryStep>("EMAIL");
   const [email, setEmail] = useState<string>("");
+  const [recoverySteps, setRecoverySteps] = useState<RecoveryStep>("EMAIL");
 
   const handleRequestPasswordChange = async () => {
     const { error } = await supabase.auth.resetPasswordForEmail(email);
@@ -71,7 +77,12 @@ const ForgotPassword = () => {
       );
 
     case "RESET_PASSWORD":
-      return <ResetPassword email={email} />;
+      return (
+        <ResetPassword email={email} setRecoverySteps={setRecoverySteps} />
+      );
+
+    case "PASSWORD_CHANGED":
+      return <PasswordChanged />;
   }
 };
 
@@ -131,12 +142,18 @@ const VerifyResetCode = ({
   );
 };
 
-const ResetPassword = ({ email }: { email: string }) => {
+const ResetPassword = ({
+  email,
+  setRecoverySteps,
+}: {
+  email: string;
+  setRecoverySteps: (t: RecoveryStep) => void;
+}) => {
   const [newPassword, setNewPassword] = useState("");
-  const [disabled, setDisabled] = useState<boolean>(false);
   const [minChar, setMinChar] = useState<boolean>(false);
-  const [conLetNum, setConLetNum] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(false);
+  const [conLetNum, setConLetNum] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(true);
 
   const resetPassword = async () => {
@@ -148,12 +165,7 @@ const ResetPassword = ({ email }: { email: string }) => {
       });
 
       if (error) throw error;
-
-      Toast.show({
-        type: ALERT_TYPE.SUCCESS,
-        title: "Success",
-        textBody: "Password reset successfully",
-      });
+      if (!error) setRecoverySteps("PASSWORD_CHANGED");
     } catch (err: any) {
       Toast.show({
         type: ALERT_TYPE.WARNING,
@@ -179,11 +191,11 @@ const ResetPassword = ({ email }: { email: string }) => {
       <View>
         <Text className="text-3xl text-white mb-2">Enter New Password</Text>
         <View className="mt-4 gap-2">
-          <View className="py-1 px-4 border border-[#d4d2d27a] rounded-lg">
+          <View className="py-1 px-4 border border-[#d4d2d27a] rounded-lg flex-row">
             <TextInput
               placeholder="Enter new password"
               placeholderTextColor={"#d4d2d288"}
-              secureTextEntry
+              secureTextEntry={showPassword}
               onChangeText={handleChangeText}
               value={newPassword}
               className="text-lg text-gray-200 flex-1 items-center"
@@ -200,7 +212,7 @@ const ResetPassword = ({ email }: { email: string }) => {
             </Pressable>
           </View>
         </View>
-        <View className="mt-4">
+        <View className="mt-3">
           <SingleRadio
             selected={conLetNum}
             text="Contains letters and numbers"
@@ -222,6 +234,34 @@ const ResetPassword = ({ email }: { email: string }) => {
           </Text>
         )}
       </Pressable>
+    </View>
+  );
+};
+
+const PasswordChanged = () => {
+  return (
+    <View className="pt-2 bg-[#0c192bf2] flex-1 justify-between p-safe-offset-4">
+      <View>
+        <SimpleLineIcons
+          name="check"
+          size={50}
+          color="white"
+          className="text-center my-3"
+        />
+        <Text className="text-2xl text-white mb-2 font-bold text-center">
+          Password updated
+        </Text>
+        <Text className="text-lg text-white mb-2 font-bold text-center">
+          Your password has been changed successfully. Use your new password to
+          log in.
+        </Text>
+      </View>
+      <Link
+        href={"/(auth)/email-login"}
+        className="items-center justify-center py-4 bg-nemo-bluePurple rounded-md"
+      >
+        <Text className="text-white text-lg text-center">Back to login</Text>
+      </Link>
     </View>
   );
 };

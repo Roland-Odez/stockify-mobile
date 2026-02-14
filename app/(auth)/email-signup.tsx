@@ -6,7 +6,7 @@ import { supabase } from "@/utils/supabase";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import { useEffect } from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, View } from "react-native";
 
 const EmailSignup = () => {
   const router = useRouter();
@@ -71,5 +71,3 @@ const EmailSignup = () => {
 };
 
 export default EmailSignup;
-
-const styles = StyleSheet.create({});

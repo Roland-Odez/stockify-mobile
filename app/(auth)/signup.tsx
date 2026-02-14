@@ -8,6 +8,7 @@ import { Image, Pressable, Text, View } from "react-native";
 
 const Signup = () => {
   const router = useRouter();
+
   return (
     <View className="pt-16 bg-[#130b1d] flex-1 justify-between p-safe-offset-4">
       <View className="gap-2.5">

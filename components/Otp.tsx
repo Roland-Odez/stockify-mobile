@@ -1,13 +1,11 @@
 import { supabase } from "@/utils/supabase";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, Pressable, Text, View } from "react-native";
+import { Alert, Pressable, Text, View } from "react-native";
 
 const Otp = ({ email }: { email: string }) => {
   const [countDown, setCountDown] = useState<number>(180);
-  const [loading, setLoading] = useState<boolean>(false);
 
   const handlePress = async () => {
-    setLoading(true);
     const { error } = await supabase.auth.resend({
       email,
       type: "signup",
@@ -17,7 +15,6 @@ const Otp = ({ email }: { email: string }) => {
     } else {
       setCountDown(180);
     }
-    setLoading(false);
   };
 
   useEffect(() => {
@@ -34,23 +31,16 @@ const Otp = ({ email }: { email: string }) => {
     <View>
       {countDown > 0 && (
         <Text className="text-[#ccc] text-base font-semibold">
-          Code expires in {Math.floor(countDown / 60)}:
+          You can request a new code in {Math.floor(countDown / 60)}:
           {(countDown % 60).toString().padStart(2, "0")}
         </Text>
       )}
 
       {countDown <= 0 && (
-        <Pressable
-          onPress={handlePress}
-          disabled={loading ? true : false}
-          style={{ opacity: loading ? 0.5 : 1 }}
-          className="border-nemo-bluePurple border-2 rounded-full items-center justify-center py-4 mt-10"
-        >
-          {loading ? (
-            <ActivityIndicator size={"small"} color={"#ddd"} />
-          ) : (
-            <Text className="text-white text-lg text-center">Resend OTP</Text>
-          )}
+        <Pressable onPress={handlePress}>
+          <Text className="text-[#ccc] text-base font-semibold underline">
+            Not received a code? Resend
+          </Text>
         </Pressable>
       )}
     </View>

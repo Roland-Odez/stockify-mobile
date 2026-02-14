@@ -1,4 +1,8 @@
+import CreateProfileStepFive from "@/components/CreateProfileStepFive";
+import CreateProfileStepFour from "@/components/CreateProfileStepFour";
 import CreateProfileStepOne from "@/components/CreateProfileStepOne";
+import CreateProfileStepThree from "@/components/CreateProfileStepThree";
+import CreateProfileStepTwo from "@/components/CreateProfileStepTwo";
 import { usePersistentForm } from "@/hooks/use-persistent-store";
 import { supabase } from "@/utils/supabase";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -11,29 +15,34 @@ const CreateProfile = () => {
   const { form, nextForm, prevForm, updateField, clearForm } =
     usePersistentForm();
 
-  useEffect(() => {
-    async function checkUserLogin() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      const userVerified = session?.user?.user_metadata?.email_verified;
-      const userExist = session?.user;
-
-      if (userExist && userVerified) {
-        router.back();
-      }
-    }
-    checkUserLogin();
-  });
-
   const handleNavigation = () => {
-    if (form.step > 1) {
+    if (form.step >= 5) {
       prevForm();
     } else {
       clearForm();
+      updateField("step", 4);
       router.back();
     }
   };
+
+  useEffect(() => {
+    const checkProfileCreated = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      const { data } = await supabase
+        .from("profiles")
+        .select("signature")
+        .eq("id", session?.user.user_metadata.sub)
+        .single();
+
+      if (data) {
+        router.back();
+      }
+    };
+
+    checkProfileCreated();
+  }, []);
   return (
     <View className="pt-16 bg-[#130b1d] flex-1 p-safe-offset-4 z-0">
       <View className="px-2 flex-row items-center gap-3">
@@ -51,17 +60,41 @@ const CreateProfile = () => {
       </View>
 
       <View className="flex-1">
-        {form.step === 1 && (
+        {form.step === 4 && (
           <CreateProfileStepOne
             form={form}
             next={nextForm}
             updateField={updateField}
           />
         )}
-        {/* {form.step === 2 && <SignUpStepTwo form={form} next={nextForm} />}
-        {form.step === 3 && (
-          <SignUpStepThree form={form} clearForm={clearForm} />
-        )} */}
+        {form.step === 5 && (
+          <CreateProfileStepTwo
+            form={form}
+            next={nextForm}
+            updateField={updateField}
+          />
+        )}
+        {form.step === 6 && (
+          <CreateProfileStepThree
+            form={form}
+            next={nextForm}
+            updateField={updateField}
+          />
+        )}
+        {form.step === 7 && (
+          <CreateProfileStepFour
+            form={form}
+            next={nextForm}
+            updateField={updateField}
+          />
+        )}
+        {form.step === 8 && (
+          <CreateProfileStepFive
+            form={form}
+            next={nextForm}
+            updateField={updateField}
+          />
+        )}
       </View>
     </View>
   );

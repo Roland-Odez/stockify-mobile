@@ -12,14 +12,15 @@ import {
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
 const EmailLogin = () => {
+  const router = useRouter();
   const [show, setShow] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
-  const router = useRouter();
+
   const handleLoginUser = async () => {
     setLoading(true);
     const { email, password } = loginDetails;
-    const { error, data } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -51,7 +52,7 @@ const EmailLogin = () => {
           <Ionicons name="arrow-back-sharp" size={24} color="white" />
         </View>
       </Pressable>
-      <View className="mt-24">
+      <View>
         <Text className="text-3xl text-white mb-2">
           Let's log you into Stockify
         </Text>

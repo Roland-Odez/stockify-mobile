@@ -13,7 +13,6 @@ type FormData = {
   dob: Date | null;
   city: string;
   tin: string;
-  signature: string;
 };
 
 const STORAGE_KEY = "contact-form";
@@ -31,7 +30,6 @@ export function usePersistentForm() {
     dob: null,
     city: "",
     tin: "",
-    signature: "",
   });
 
   // Load saved form
@@ -46,12 +44,12 @@ export function usePersistentForm() {
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(form));
   }, [form]);
 
-  function updateField(key: keyof FormData, value: string | number) {
+  function updateField(key: keyof FormData, value: string | number | Date) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
   function nextForm() {
-    if (!(form.step >= 3)) {
+    if (!(form.step >= 8)) {
       setForm((prev) => ({ ...prev, step: prev.step + 1 }));
     }
   }
@@ -75,7 +73,6 @@ export function usePersistentForm() {
       nationality: "",
       sex: null,
       city: "",
-      signature: "",
       tin: "",
     });
   }

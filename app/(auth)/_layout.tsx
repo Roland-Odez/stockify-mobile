@@ -45,6 +45,14 @@ export default function AuthLayout() {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="auth-complete"
+        options={{
+          headerShown: false,
+          title: "",
+          headerTransparent: true,
+        }}
+      />
     </Stack>
   );
 }

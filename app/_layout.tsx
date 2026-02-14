@@ -10,6 +10,7 @@ import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { View } from "react-native";
 import { AlertNotificationRoot } from "react-native-alert-notification";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import "react-native-reanimated";
 import "../global.css";
 
@@ -21,44 +22,46 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <MenuAnimationProvider>
-      <AlertNotificationRoot>
-        <ThemeProvider
-          value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
-        >
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <Menu />
-            <Stack
-              screenOptions={{
-                headerTitleAlign: "center",
-                headerStyle: { backgroundColor: "black" },
-                headerTitleStyle: {
-                  fontSize: 18,
-                  fontWeight: "bold",
-                  color: "white",
-                },
-              }}
-            >
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="faq" options={{ title: "FAQs" }} />
-              <Stack.Screen
-                name="learn"
-                options={{ title: "Learn with Stockify" }}
-              />
-              <Stack.Screen
-                name="notifications"
-                options={{ title: "Notifications" }}
-              />
-              <Stack.Screen
-                name="privacy"
-                options={{ title: "Privacy Policy" }}
-              />
-            </Stack>
-          </View>
-          <StatusBar style="auto" />
-        </ThemeProvider>
-      </AlertNotificationRoot>
-    </MenuAnimationProvider>
+    <GestureHandlerRootView>
+      <MenuAnimationProvider>
+        <AlertNotificationRoot>
+          <ThemeProvider
+            value={colorScheme === "dark" ? DarkTheme : DefaultTheme}
+          >
+            <View style={{ flex: 1, flexDirection: "row" }}>
+              <Menu />
+              <Stack
+                screenOptions={{
+                  headerTitleAlign: "center",
+                  headerStyle: { backgroundColor: "black" },
+                  headerTitleStyle: {
+                    fontSize: 18,
+                    fontWeight: "bold",
+                    color: "white",
+                  },
+                }}
+              >
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="faq" options={{ title: "FAQs" }} />
+                <Stack.Screen
+                  name="learn"
+                  options={{ title: "Learn with Stockify" }}
+                />
+                <Stack.Screen
+                  name="notifications"
+                  options={{ title: "Notifications" }}
+                />
+                <Stack.Screen
+                  name="privacy"
+                  options={{ title: "Privacy Policy" }}
+                />
+              </Stack>
+            </View>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </AlertNotificationRoot>
+      </MenuAnimationProvider>
+    </GestureHandlerRootView>
   );
 }

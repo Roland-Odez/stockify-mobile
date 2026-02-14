@@ -1,6 +1,5 @@
-import { Checkbox } from "@futurejj/react-native-checkbox";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { z } from "zod";
@@ -17,10 +16,9 @@ type FormData = {
   dob: Date | null;
   city: string;
   tin: string;
-  signature: string;
 };
 
-interface SignUpStepOneProps {
+interface CreateProfileStepOneProps {
   form: FormData;
   next: () => void;
   updateField: (key: keyof FormData, value: string | number) => void;
@@ -38,118 +36,128 @@ const CreateProfileStepOne = ({
   form,
   next,
   updateField,
-}: SignUpStepOneProps) => {
-  const [checked, setChecked] = useState<boolean>(false);
+}: CreateProfileStepOneProps) => {
   const { control, handleSubmit, setValue } = useForm({
     resolver: zodResolver(schema),
   });
+
   useEffect(() => {
     if (form.firstName) {
       setValue("firstName", form.firstName);
     }
+    console.log(form.firstName);
     if (form.lastName) {
       setValue("lastName", form.lastName);
     }
+    if (form.sex) {
+      setValue("sex", form.sex);
+    }
   });
 
-  const handleFormSubmit = async ({ firtName, lastName }: any) => {
-    updateField("firstName", firtName);
+  const handleFormSubmit = async ({ firstName, lastName, sex }: any) => {
+    updateField("firstName", firstName);
     updateField("lastName", lastName);
+    updateField("sex", sex);
     next();
   };
 
   return (
-    <View className="flex-1">
-      <Text className="text-4xl text-white mb-2 mt-10">
-        Thanks! Next, let's complete your profile
-      </Text>
-      <Controller
-        control={control}
-        name="firstName"
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <>
-            <View className="mt-4 gap-2">
-              <Text className="text-[#ccc] text-lg">First Name</Text>
-              <View className="py-1 px-4 bg-[#f9f9f928]">
-                <TextInput
-                  placeholder="Enter your first name"
-                  onChangeText={onChange}
-                  placeholderTextColor={"#eee"}
-                  value={value}
-                  className="text-lg text-gray-200"
-                />
-              </View>
-            </View>
-            {error && (
-              <Text className="text-xs text-red-500">{error.message}</Text>
-            )}
-          </>
-        )}
-      />
-      <Controller
-        control={control}
-        name="lastName"
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <>
-            <View className="mt-4 gap-2">
-              <Text className="text-[#ccc] text-lg">Last Name</Text>
-              <View className="py-1 px-4 bg-[#f9f9f928]">
-                <TextInput
-                  placeholder="Enter your last name"
-                  onChangeText={onChange}
-                  placeholderTextColor={"#eee"}
-                  value={value}
-                  className="text-lg text-gray-200"
-                />
-              </View>
-            </View>
-            {error && (
-              <Text className="text-xs text-red-500">{error.message}</Text>
-            )}
-          </>
-        )}
-      />
-
-      <Controller
-        control={control}
-        name="sex"
-        render={({ field: { onChange, value }, fieldState: { error } }) => (
-          <>
-            <View className="flex-row gap-5">
-              <View className="mt-4 gap-2">
-                <Text className="text-[#ccc] text-lg">Country</Text>
-                <View className="py-1 px-6 h-14 gap-4 bg-[#f9f9f928] flex-row items-center">
-                  <Text className="text-[#eee] text-xl">Male</Text>
-                </View>
-              </View>
-              <View className="mt-4 gap-2">
-                <View className="py-1 px-6 h-14 gap-4 bg-[#f9f9f928] flex-row items-center">
-                  <Text className="text-[#eee] text-xl">Female</Text>
-                </View>
-              </View>
-            </View>
-            {error && (
-              <Text className="text-xs text-red-500">{error.message}</Text>
-            )}
-          </>
-        )}
-      />
-
-      <View className="flex-row mt-5 gap-2 items-start flex-1">
-        <Checkbox
-          status={checked ? "checked" : "unchecked"}
-          onPress={() => setChecked(!checked)}
-        />
-        <Text className="text-[#ccc] text-lg mt-1 flex-1">
-          I agree to Stockify{" "}
-          <Text className="underline">Terms and conditions</Text> and understand
-          that by continuing i am agreeing to be contacted about product news
-          and update
+    <View className="flex-1 justify-between">
+      <View>
+        <Text className="text-4xl text-white mb-2 mt-10">
+          Thanks! Next, let's complete your profile
         </Text>
+        <Controller
+          control={control}
+          name="firstName"
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <>
+              <View className="mt-4 gap-2">
+                <Text className="text-[#ccc] text-lg">First Name</Text>
+                <View className="py-1 px-4 bg-[#5d4d7082] rounded-sm">
+                  <TextInput
+                    placeholder="Enter your first name"
+                    onChangeText={onChange}
+                    placeholderTextColor={"#eee"}
+                    value={value}
+                    className="text-lg text-gray-200"
+                  />
+                </View>
+              </View>
+              {error && (
+                <Text className="text-xs text-red-500">{error.message}</Text>
+              )}
+            </>
+          )}
+        />
+        <Controller
+          control={control}
+          name="lastName"
+          render={({ field: { onChange, value }, fieldState: { error } }) => (
+            <>
+              <View className="mt-4 gap-2">
+                <Text className="text-[#ccc] text-lg">Last Name</Text>
+                <View className="py-1 px-4 bg-[#5d4d7082] rounded-sm">
+                  <TextInput
+                    placeholder="Enter your last name"
+                    onChangeText={onChange}
+                    placeholderTextColor={"#eee"}
+                    value={value}
+                    className="text-lg text-gray-200"
+                  />
+                </View>
+              </View>
+              {error && (
+                <Text className="text-xs text-red-500">{error.message}</Text>
+              )}
+            </>
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="sex"
+          render={({ field: { value }, fieldState: { error } }) => (
+            <>
+              <Text className="text-[#ccc] text-lg mt-4">Sex</Text>
+              <View className="flex-row gap-5">
+                <Pressable
+                  className="mt-4 gap-2 flex-1"
+                  onPress={() => setValue("sex", "Male")}
+                >
+                  <View
+                    className="py-1 px-6 h-14 gap-4 border-2 rounded-md border-[#5d4d7082] flex-row items-center justify-center"
+                    style={{
+                      backgroundColor:
+                        value === "Male" ? "#5d4d7082" : "transparent",
+                    }}
+                  >
+                    <Text className="text-[#eee] text-xl">Male</Text>
+                  </View>
+                </Pressable>
+                <Pressable
+                  className="mt-4 gap-2 flex-1"
+                  onPress={() => setValue("sex", "Female")}
+                >
+                  <View
+                    className="py-1 px-6 h-14 gap-4 border-2 rounded-md border-[#5d4d7082] flex-row items-center justify-center"
+                    style={{
+                      backgroundColor:
+                        value === "Female" ? "#5d4d7082" : "transparent",
+                    }}
+                  >
+                    <Text className="text-[#eee] text-xl">Female</Text>
+                  </View>
+                </Pressable>
+              </View>
+              {error && (
+                <Text className="text-xs text-red-500">{error.message}</Text>
+              )}
+            </>
+          )}
+        />
       </View>
       <Pressable
-        style={{ opacity: checked ? 1 : 0.5 }}
-        disabled={!checked}
         onPress={handleSubmit(handleFormSubmit)}
         className="bg-nemo-bluePurple rounded-full items-center justify-center py-4"
       >

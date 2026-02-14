@@ -18,12 +18,12 @@ type Form = {
   phone: string;
 };
 
-interface SignUpStepTwoProps {
+interface SignUpStepThreeProps {
   form: Form;
   clearForm: () => void;
 }
 
-const SignUpStepThree = ({ form, clearForm }: SignUpStepTwoProps) => {
+const SignUpStepThree = ({ form, clearForm }: SignUpStepThreeProps) => {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [loading, setLoading] = useState<boolean>(false);
   const [code, setCode] = useState<string>("");
@@ -53,7 +53,6 @@ const SignUpStepThree = ({ form, clearForm }: SignUpStepTwoProps) => {
         button: "continue",
         onPressButton() {
           router.push("/(tabs)/discovery");
-          clearForm();
           Dialog.hide();
         },
       });
