@@ -1,19 +1,14 @@
 import { useMenuAnimation } from "@/context/MenuAnimationContext";
-import { supabase } from "@/utils/supabase";
+import { useAuth } from "@/hooks/useAuthContext";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import {
-  Href,
-  Link,
-  useLocalSearchParams,
-  usePathname,
-  useRouter,
-} from "expo-router";
-import React, { useEffect, useState } from "react";
+import { Href, Link, useLocalSearchParams, usePathname } from "expo-router";
+import React from "react";
 import {
   Pressable,
   StyleSheet,
@@ -97,8 +92,8 @@ const Menu = () => {
   const { menuOpen } = useMenuAnimation();
   const dropDownLink = useSharedValue(0);
   const params = useLocalSearchParams();
-  const router = useRouter();
-  const [userexist, setUserexist] = useState<boolean>(false);
+
+  const { session, logout } = useAuth();
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [
@@ -113,34 +108,12 @@ const Menu = () => {
     overflow: "hidden",
   }));
 
-  useEffect(() => {
-    async function fetchUserSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      const userExist = session?.user;
-      if (userExist) {
-        setUserexist(true);
-      } else {
-        setUserexist(false);
-      }
-    }
-
-    fetchUserSession();
-  }, [userexist]);
-
-  const logout = async () => {
-    if (userexist) {
-      const { error } = await supabase.auth.signOut();
-      if (!error) {
-        menuOpen.value = menuOpen.value ? 0 : 1;
-        router.reload();
-      }
-    } else {
-      router.push("/(auth)/email-login");
-      menuOpen.value = menuOpen.value ? 0 : 1;
-    }
+  const logOut = async () => {
+    logout();
+    menuOpen.value = menuOpen.value ? 0 : 1;
   };
+
+  console.log("user exist", session);
 
   return (
     <Animated.View
@@ -248,6 +221,33 @@ const Menu = () => {
           })}
         </View>
         <View className="flex-1 justify-end gap-1">
+          {session && (
+            <View className="py-4">
+              <Link
+                href=".."
+                onPress={() => {
+                  menuOpen.value = menuOpen.value ? 0 : 1;
+                }}
+              >
+                <View className="flex-row items-center gap-3 px-4">
+                  {/* icon */}
+                  <Ionicons
+                    name="person-circle"
+                    size={22}
+                    color={pathname.startsWith(`/`) ? "white" : "#878585e8"}
+                  />
+                  <Text
+                    className="text-lg"
+                    style={{
+                      color: pathname.startsWith(`/`) ? "white" : "#878585e8",
+                    }}
+                  >
+                    Profile
+                  </Text>
+                </View>
+              </Link>
+            </View>
+          )}
           {pagesLinks.map((link) => {
             return (
               <View key={link.name} className="py-4">
@@ -285,7 +285,7 @@ const Menu = () => {
             );
           })}
           <View className="py-4">
-            <Pressable onPress={logout}>
+            <Pressable onPress={logOut}>
               <View className="flex-row items-center gap-3 px-4">
                 <MaterialCommunityIcons
                   name="login"
@@ -293,7 +293,7 @@ const Menu = () => {
                   color="#878585e8"
                 />
                 <Text className="text-lg text-[#878585e8]">
-                  {userexist ? "Log out" : "Log in"}
+                  {session ? "Log out" : "Log in"}
                 </Text>
               </View>
             </Pressable>

@@ -1,3 +1,4 @@
+import { useAuth } from "@/hooks/useAuthContext";
 import { supabase } from "@/utils/supabase";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -10,11 +11,10 @@ type ButtonType = "NOT_LOGIN" | "NO_PROFILE" | "LOGIN_PROFILE";
 export const HeaderBtn = () => {
   const [type, setType] = useState<ButtonType>("LOGIN_PROFILE");
 
+  const { session } = useAuth();
+
   useEffect(() => {
     async function checkUserLogin() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
       const userVerified = session?.user?.user_metadata?.email_verified;
       const userExist = session?.user;
 
@@ -37,7 +37,7 @@ export const HeaderBtn = () => {
       }
     }
     checkUserLogin();
-  });
+  }, [session]);
 
   switch (type) {
     case "NOT_LOGIN":

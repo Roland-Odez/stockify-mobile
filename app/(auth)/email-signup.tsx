@@ -2,31 +2,16 @@ import SignUpStepOne from "@/components/SignUpStepOne";
 import SignUpStepThree from "@/components/SignUpStepThree";
 import SignUpStepTwo from "@/components/SignUpStepTwo";
 import { usePersistentForm } from "@/hooks/use-persistent-store";
-import { supabase } from "@/utils/supabase";
+import { useAuth } from "@/hooks/useAuthContext";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { useRouter } from "expo-router";
-import { useEffect } from "react";
-import { Pressable, View } from "react-native";
+import { Redirect, useRouter } from "expo-router";
+import { ActivityIndicator, Pressable, View } from "react-native";
 
 const EmailSignup = () => {
   const router = useRouter();
   const { form, nextForm, prevForm, updateField, clearForm } =
     usePersistentForm();
-
-  useEffect(() => {
-    async function checkUserLogin() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      const userVerified = session?.user?.user_metadata?.email_verified;
-      const userExist = session?.user;
-
-      if (userExist && userVerified) {
-        router.back();
-      }
-    }
-    checkUserLogin();
-  });
+  const { session, loading } = useAuth();
 
   const handleNavigation = () => {
     if (form.step > 1) {
@@ -36,6 +21,18 @@ const EmailSignup = () => {
       router.back();
     }
   };
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center" }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (session) {
+    return <Redirect href="/(tabs)/discovery" />;
+  }
 
   return (
     <View className="pt-16 bg-[#130b1d] flex-1 p-safe-offset-4 z-0">
