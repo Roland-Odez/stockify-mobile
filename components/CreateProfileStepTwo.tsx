@@ -8,24 +8,10 @@ import Animated, {
 } from "react-native-reanimated";
 import CountryListSheet from "./CountryListSheet";
 
-type FormData = {
-  step: number;
-  totalStep: number;
-  email: string;
-  phone: string;
-  firstName: string;
-  lastName: string;
-  sex: "Male" | "Female" | null;
-  nationality: string;
-  dob: Date | null;
-  city: string;
-  tin: string;
-};
-
 interface CreateProfileStepTwoProps {
-  form: FormData;
+  form: PersistentData;
   next: () => void;
-  updateField: (key: keyof FormData, value: string | number) => void;
+  updateField: (key: keyof PersistentData, value: string | number) => void;
 }
 
 const CreateProfileStepTwo = ({

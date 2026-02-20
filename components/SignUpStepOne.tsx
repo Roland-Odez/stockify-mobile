@@ -6,16 +6,16 @@ import { Controller, useForm } from "react-hook-form";
 import { Pressable, Text, TextInput, View } from "react-native";
 import { z } from "zod";
 
-type FormData = {
+type PersistentData = {
   step: number;
   email: string;
   phone: string;
 };
 
 interface SignUpStepOneProps {
-  form: FormData;
+  form: PersistentData;
   next: () => void;
-  updateField: (key: keyof FormData, value: string | number) => void;
+  updateField: (key: keyof PersistentData, value: string | number) => void;
 }
 
 const schema = z.object({

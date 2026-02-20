@@ -11,24 +11,10 @@ import {
 } from "react-native";
 import { ALERT_TYPE, Toast } from "react-native-alert-notification";
 
-type FormData = {
-  step: number;
-  totalStep: number;
-  email: string;
-  phone: string;
-  firstName: string;
-  lastName: string;
-  sex: "Male" | "Female" | null;
-  nationality: string;
-  dob: Date | null;
-  city: string;
-  tin: string;
-};
-
 interface CreateProfileStepThreeProps {
-  form: FormData;
+  form: PersistentData;
   next: () => void;
-  updateField: (key: keyof FormData, value: string | number) => void;
+  updateField: (key: keyof PersistentData, value: string | number) => void;
 }
 
 const CreateProfileStepFive = ({
@@ -60,7 +46,8 @@ const CreateProfileStepFive = ({
 
   const handleFormSubmit = async () => {
     setLoading(true);
-    const { firstName, lastName, city, dob, nationality, sex, tin } = form;
+    const { firstName, lastName, city, dob, nationality, sex, tin, phone } =
+      form;
     if (signature.toLowerCase().includes(firstName.toLowerCase())) {
       const { error } = await supabase.from("profiles").insert({
         first_name: firstName,
@@ -72,6 +59,7 @@ const CreateProfileStepFive = ({
         tin,
         city,
         signature: true,
+        phone,
       });
 
       setLoading(false);

@@ -1,24 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useEffect, useState } from "react";
 
-type FormData = {
-  step: number;
-  totalStep: number;
-  email: string;
-  phone: string;
-  firstName: string;
-  lastName: string;
-  sex: "Male" | "Female" | null;
-  nationality: string;
-  dob: Date | null;
-  city: string;
-  tin: string;
-};
-
 const STORAGE_KEY = "contact-form";
 
 export function usePersistentForm() {
-  const [form, setForm] = useState<FormData>({
+  const [form, setForm] = useState<PersistentData>({
     step: 1,
     totalStep: 8,
     email: "",
@@ -44,7 +30,10 @@ export function usePersistentForm() {
     AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(form));
   }, [form]);
 
-  function updateField(key: keyof FormData, value: string | number | Date) {
+  function updateField(
+    key: keyof PersistentData,
+    value: string | number | Date,
+  ) {
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 

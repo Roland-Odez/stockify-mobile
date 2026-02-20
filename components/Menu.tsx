@@ -3,11 +3,10 @@ import { useAuth } from "@/hooks/useAuthContext";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Feather from "@expo/vector-icons/Feather";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import SimpleLineIcons from "@expo/vector-icons/SimpleLineIcons";
-import { Href, Link, useLocalSearchParams, usePathname } from "expo-router";
+import { Link, useLocalSearchParams, usePathname } from "expo-router";
 import React from "react";
 import {
   Pressable,
@@ -21,13 +20,6 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from "react-native-reanimated";
-
-interface MenuLink {
-  name: string;
-  path?: Href;
-  icon: (color: string) => React.ReactElement;
-  innerLink?: { name: string; path: Href }[];
-}
 
 const menuLinks: MenuLink[] = [
   {
@@ -142,9 +134,7 @@ const Menu = () => {
           {menuLinks.map((link) => {
             const isActiveInner =
               link.innerLink?.some(
-                (p) =>
-                  // pathname.startsWith(String(p.path).split('?')[0])
-                  params.tab === p.path.toString().split("=")[1],
+                (p) => params.tab === p.path.toString().split("=")[1],
               ) ?? false;
             return (
               <View key={link.name} className="mb-4">
@@ -224,15 +214,15 @@ const Menu = () => {
           {session && (
             <View className="py-4">
               <Link
-                href=".."
+                href="/profile"
                 onPress={() => {
                   menuOpen.value = menuOpen.value ? 0 : 1;
                 }}
               >
                 <View className="flex-row items-center gap-3 px-4">
                   {/* icon */}
-                  <Ionicons
-                    name="person-circle"
+                  <MaterialIcons
+                    name="person-outline"
                     size={22}
                     color={pathname.startsWith(`/`) ? "white" : "#878585e8"}
                   />

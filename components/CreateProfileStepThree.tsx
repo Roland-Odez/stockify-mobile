@@ -5,24 +5,13 @@ import DateTimePicker, {
 import React, { useEffect, useState } from "react";
 import { Pressable, Text, TextInput, View } from "react-native";
 
-type FormData = {
-  step: number;
-  totalStep: number;
-  email: string;
-  phone: string;
-  firstName: string;
-  lastName: string;
-  sex: "Male" | "Female" | null;
-  nationality: string;
-  dob: Date | null;
-  city: string;
-  tin: string;
-};
-
 interface CreateProfileStepThreeProps {
-  form: FormData;
+  form: PersistentData;
   next: () => void;
-  updateField: (key: keyof FormData, value: string | number | Date) => void;
+  updateField: (
+    key: keyof PersistentData,
+    value: string | number | Date,
+  ) => void;
 }
 
 const CreateProfileStepThree = ({
@@ -33,6 +22,7 @@ const CreateProfileStepThree = ({
   const [showDate, setShowDate] = useState<boolean>(false);
   const [date, setDate] = useState<Date>(new Date());
   const [city, setCity] = useState<string>("");
+  const [phone, setPhone] = useState<string>("");
 
   const handleChangeDate = (
     event: DateTimePickerEvent,
@@ -52,11 +42,15 @@ const CreateProfileStepThree = ({
     if (form.city) {
       setCity(form.city);
     }
-  }, [form.dob, form.city]);
+    if (form.phone) {
+      setPhone(form.phone);
+    }
+  }, [form.dob, form.city, form.phone]);
 
   const handleFormSubmit = async () => {
     updateField("dob", date);
     updateField("city", city);
+    updateField("phone", phone);
     next();
   };
 
@@ -99,6 +93,16 @@ const CreateProfileStepThree = ({
                 className="text-lg text-gray-200"
                 value={city}
                 onChangeText={(t) => setCity(t)}
+              />
+            </View>
+          </View>
+          <View className="mt-4 gap-2">
+            <Text className="text-[#ccc] text-lg">Phone number</Text>
+            <View className="py-1 px-4 bg-[#5d4d7082] rounded-sm">
+              <TextInput
+                className="text-lg text-gray-200"
+                value={phone}
+                onChangeText={(t) => setPhone(t)}
               />
             </View>
           </View>
